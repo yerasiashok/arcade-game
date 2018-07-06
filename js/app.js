@@ -18,6 +18,15 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += dt * this.speed;
+    if((this.y === player.y) && (player.x >= this.x) && (player.x <= (this.x + 75))) {
+        player.y = 375
+    }
+    if (this.x >= 505) {
+        this.x = 0;
+        this.y = ((Math.floor(Math.random()* 10 ) % 3) * 75) + 75;
+        this.speed = Math.random()*800;
+        //allEnemies.push(new Enemy((Math.random())*500, 150, (Math.random())*800))
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -33,6 +42,7 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = 200;
     this.y = 375;
+    this.score =0;
 };
 
 Player.prototype.update = function(dt) {
@@ -52,7 +62,8 @@ Player.prototype.handleInput = function(keyPressed) {
         case 'right': 
             ((this.x === 400) || (this.x += 100)); break;
         case 'up': 
-            (((this.y === 75) && (this.y = 375)) || (this.y -= 75)); break;
+            (((this.y === 75) && (this.y = 375) && (this.score++)) || ((this.y -= 75))); 
+            console.log(this.score); break;
         case 'down': 
             ((this.y === 375) || (this.y += 75));
     }
@@ -61,10 +72,12 @@ Player.prototype.handleInput = function(keyPressed) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy(200, 225, 100), new Enemy( 100, 140, 50)]
+var allEnemies = [];
 var player = new Player();
 
-
+for (var i=0; i<2; i++) {
+    allEnemies.push(new Enemy(Math.random()*500, ((Math.floor(Math.random()* 10 ) % 3) * 75) + 75, Math.random()*800))
+}
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
