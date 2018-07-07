@@ -1,10 +1,10 @@
 
 var playerImages = [
+    'images/char-princess-girl.png',
     'images/char-boy.png',
     'images/char-cat-girl.png',
     'images/char-horn-girl.png',
-    'images/char-pink-girl.png',
-    'images/char-princess-girl.png'
+    'images/char-pink-girl.png'    
 ];
 
 // Enemies our player must avoid
@@ -21,10 +21,7 @@ Enemy.prototype.update = function(dt) {
     if((this.y === player.y) && (player.x >= this.x) && (player.x <= (this.x + 75))) {
         player.y = 375;
         player.life--;
-        if (player.life === 0)
-                location.reload();
-        else 
-            player.sprite = playerImages[player.life];
+        player.sprite = playerImages[player.life];
     }
     if (this.x >= 505) {
         this.x = 0;
@@ -51,7 +48,13 @@ Player.prototype.update = function(s) {
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.fillText("Score:- " + this.score +'\t\t\t\t' +"Life:- " + (this.life + 1),250,50);
+    if (player.life === -1){
+        ctx.fillText("GAME OVER !!!",250,270);
+    }
+    else{
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 };
 
 Player.prototype.handleInput = function(keyPressed) {
